@@ -1,0 +1,2 @@
+[wildfly]
+localhost ansible_connection=local

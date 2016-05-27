@@ -1,0 +1,4 @@
+---
+- hosts: localhost
+  tasks:
+  - wildfly: wildfly_home=/opt/wildfly-10.2.Final
