@@ -23,7 +23,9 @@ def _prepare_cli_classpath(wildfly_home):
     from java.net import URL, URLClassLoader
     from java.io import File
     from jarray import array
-    cliJar = File(wildfly_home + "/bin/client/jboss-cli-client.jar").toURL()
+    cli_jar_path = '%s/%s' % (wildfly_home, 'bin/client/jboss-cli-client.jar')
+    module.log("load wildfly cli from %s" % cli_jar_path)
+    cliJar = File(cli_jar_path).toURL()
     currentThreadClassLoader = Thread.currentThread().getContextClassLoader()
     urlClassLoader = URLClassLoader(array([cliJar], URL), currentThreadClassLoader)
     Thread.currentThread().setContextClassLoader(urlClassLoader)
@@ -51,9 +53,8 @@ def main():
         cli.connect()
         # got a connection
         result = {
-            "changed": changed,
-            "msg": "TODO add finished changes",
-            "has_syslog": HAS_SYSLOG
+            "changed": False,
+            "msg": "connected to wildfly cli"
         }
         module.exit_json(**result)
     except IllegalStateException as e:
