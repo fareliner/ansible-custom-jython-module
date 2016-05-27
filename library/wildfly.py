@@ -49,10 +49,10 @@ def connect(cli, controller_host=None, controller_port=None, admin_username=None
         else:
             cli.connect(controller_host, controller_port, admin_username, admin_password)
     except IllegalStateException as e:
-        if e.getMessage().startswith('Already connected to server'):
+        if e.message.startswith('Already connected to server'):
             module.log("already connected to server")
         else:
-            module.log("connecting to server failed, retry in 2 seconds: %s" % e)
+            module.log("connecting to server failed, retry in 2 seconds: %s" % e.message)
             # cleanup and try again
             try:
                 cli.disconnect()
@@ -105,6 +105,7 @@ def main():
         connect(cli)
         module.log('after connect one')
         cli.cmd('cd /')
+        module.log('after cmd one')
         connect(cli)
         module.log('after connect two')
 
@@ -116,7 +117,7 @@ def main():
         module.exit_json(**result)
     except IllegalStateException as e:
         result = {
-            "msg": "failed connecting to wildfly: %s" % (e.getMessage()),
+            "msg": "failed connecting to wildfly: %s" % e.message,
             "traceback": traceback.format_exc()
         }
         module.fail_json(**result)
