@@ -1,0 +1,9 @@
+---
+- name: start rsyslog
+  service: name=rsyslog state=started
+
+- name: restart rsyslog
+  service: name=rsyslog state=restarted
+
+- name: stop rsyslog
+  service: name=rsyslog state=stopped

@@ -1,0 +1,10 @@
+---
+jython_version: 2.7.0
+
+jython_name: "jython-{{ jython_version }}"
+
+jython_home: "/opt/{{ jython_name }}"
+
+jython_distro: "jython-installer-{{ jython_version }}.jar"
+
+jython_distro_url: "http://search.maven.org/remotecontent?filepath=org/python/jython-installer/{{ jython_version }}/{{ jython_distro }}"

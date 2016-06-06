@@ -1,0 +1,28 @@
+---
+- hosts: pyboss
+
+  roles:
+    - role: ansible-rsyslog
+      tags: ['common']
+    - role: ansible-jython
+      tags: ['common']
+
+  tasks:
+    - name: "Download jyboss (pip does not work properly behind proxy)"
+      include: roles/ansible-jython/tasks/dl/download-{{ dl_mode | default('local') }}.yml
+      vars:
+        module: "jyboss-0.0.1.tar.gz"
+        url: "https://github.com/bertramn/jyboss-cli/releases/download/v0.0.1/jyboss-0.0.1.tar.gz"
+      tags: ['common']
+
+    - name: Install PyBoss Python Package
+      pip:
+        name: "{{ download_dir }}/jyboss-0.0.1.tar.gz"
+        executable: "{{ jython_home }}/bin/pip"
+      tags: ['common']
+
+    - name: Connect to JBoss For Facts
+      jboss:
+        jboss_home: "{{ jboss_home }}"
+        facts: yes
+      tags: ['jboss']

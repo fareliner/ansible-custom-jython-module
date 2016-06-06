@@ -1,6 +1,0 @@
----
-- hosts: wildfly
-  tasks:
-    - wildfly: wildfly_home="{{ wildfly_home }}"
-  vars:
-    wildfly_home: /opt/wildfly-10.0.0.Final

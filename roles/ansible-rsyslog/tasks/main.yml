@@ -1,0 +1,13 @@
+---
+- name: "Enable rsyslog UDP Module"
+  lineinfile: dest=/etc/rsyslog.conf state=present regexp='^#(\$ModLoad\ imudp.*)' line='\1' backrefs=yes
+  notify: restart rsyslog
+  when: "{{ syslog_udp_enabled }}"
+
+- name: "Enable rsyslog UDP Server"
+  lineinfile: dest=/etc/rsyslog.conf state=present regexp='^#(\$UDPServerRun.*)' line='\1' backrefs=yes
+  notify: restart rsyslog
+  when: "{{ syslog_udp_enabled }}"
+
+- name: Flush rsyslog Reload Handler
+  meta: flush_handlers

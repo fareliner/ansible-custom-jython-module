@@ -1,0 +1,12 @@
+---
+# `download_dir` the directory on the target host where the oidc module will by donloaded to
+- name: "Check {{ module }} Downloaded"
+  stat: path="{{ download_dir | default('/tmp') }}/{{ module }}"
+  register: module_download_check
+
+- name: Ensure Remote Download Location Exists
+  file: path="{{ download_dir | default('/tmp') }}" state=directory
+
+- name: "Download {{ module }}"
+  get_url: url="{{ url }}" dest="{{ download_dir | default('/tmp') }}/{{ module }}"
+  when: not module_download_check.stat.exists

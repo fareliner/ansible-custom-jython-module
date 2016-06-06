@@ -1,1 +1,7 @@
 *.retry
+tmp/
+.idea/
+*.iml
+.settings/
+.classpath
+.project

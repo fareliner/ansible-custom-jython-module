@@ -1,0 +1,28 @@
+---
+# `local_download_dir` the directory where the oidc module will be donwloaded to
+# `download_dir` the directory on the target host where the oidc module will by synched to
+
+- name: Ensure Local Download Location Exists
+  become: no
+  local_action: >
+    file path="{{ local_download_dir | default('~/Downloads') }}" state=directory
+
+- name: "Check {{ module }} Downloaded"
+  become: no
+  local_action: >
+    stat path="{{ local_download_dir | default('~/Downloads') }}/{{ module }}"
+  register: module_download_check
+
+- name: "Download {{ module }}"
+  become: no
+  local_action: >
+    get_url url="{{ url }}" dest="{{ local_download_dir | default('~/Downloads') }}/{{ module }}"
+  when: not module_download_check.stat.exists
+
+- name: Ensure Download Location on Target Host Exists
+  file: path="{{ download_dir | default('/tmp') }}" state=directory
+
+- name: "Copy {{ module }} to Target Host"
+  copy:
+    src="{{ local_download_dir|default('~/Downloads') }}/{{ module }}"
+    dest="{{ download_dir | default('/tmp') }}/{{ module }}"

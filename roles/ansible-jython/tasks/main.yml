@@ -1,0 +1,64 @@
+---
+- include: dl/download-{{ dl_mode | default('local') }}.yml
+  vars:
+    module: "{{ item.module }}"
+    url: "{{ item.url }}"
+  with_items:
+    - { # Jython distro
+        module: "{{ jython_distro }}",
+        url: "{{ jython_distro_url }}"
+      }
+    - { # syslog4j
+        module: syslog4j-0.9.46-bin.jar,
+        url: "http://www.syslog4j.org/downloads/syslog4j-0.9.46-bin.jar"
+      }
+    - { # jna
+        module: jna-4.2.2.jar,
+        url: "https://maven.java.net/content/repositories/releases/net/java/dev/jna/jna/4.2.2/jna-4.2.2.jar"
+      }
+
+- name: Install Jython
+  shell: java -jar '{{ download_dir }}/{{ jython_distro }}' -s -d "{{ jython_home }}"
+  args:
+    creates: "{{ jython_home }}/bin"
+
+# REVIEW review if this is not a security risk but otherwise no logged in user
+# will be able to load a jar from classpwth without a pesky error message
+- name: Free Jython Cache Directory
+  file: path={{ jython_home }}/cachedir state=directory recurse=no mode=0777
+
+- name: Free Jython Cache Package Directory
+  file: path={{ jython_home }}/cachedir/packages state=directory recurse=no mode=0777
+
+- name: Set Jython Default Shell
+  template:
+    src: jython.sh.j2
+    dest: "/etc/profile.d/jython.sh"
+    owner: root
+    group: root
+    mode: "0755"
+    force: "yes"
+
+- name: Link To User Local Environment
+  file:
+    src: "{{ jython_home }}/bin/jython"
+    dest: /usr/bin/jython
+    state: link
+    owner: root
+    group: root
+
+# REVIEW should really implement the module using syslog4j and use the socket instead of enableing UDP rsyslog
+# http://www.syslog4j.org/
+# http://www.gnu.org/software/libc/manual/html_node/syslog_003b-vsyslog.html
+
+# "unpack" syslog to JYTHON_HOME/Lib
+- name: Unpack syslog4j to Jython Lib
+  shell: unzip "{{ download_dir }}/syslog4j-0.9.46-bin.jar" 'org/*' -d "{{ jython_home }}/Lib"
+  args:
+    creates: "{{ jython_home }}/Lib/org/productivity/java/syslog4j"
+
+# "unpack" jna to JYTHON_HOME/Lib
+- name: Unpack Java Native Interface to Jython Lib
+  shell: unzip "{{ download_dir }}/jna-4.2.2.jar" 'com/sun/jna*' -d "{{ jython_home }}/Lib"
+  args:
+    creates: "{{ jython_home }}/Lib/com/sun/jna"
