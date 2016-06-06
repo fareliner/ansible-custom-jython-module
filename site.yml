@@ -8,8 +8,6 @@
       tags: ['common']
 
   tasks:
-    - debug: var=jython_home
-    - debug: var=jyboss_version
 
     - name: "Download JyBoss Python Package (pip does not work properly behind proxy)"
       include: roles/ansible-jython/tasks/dl/download-{{ dl_mode | default('local') }}.yml
@@ -28,4 +26,8 @@
       jboss:
         jboss_home: "{{ jboss_home }}"
         facts: yes
+      tags: ['jboss']
+
+    - name: Check what we got from the JEE server retrieved by the JyBoss Module
+      debug: var=jboss_ls
       tags: ['jboss']
