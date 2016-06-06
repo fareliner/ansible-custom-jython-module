@@ -1,5 +1,5 @@
 ---
 jboss_home: /opt/keycloak-1.9.7.Final
-download_dir: "/tmp/dl"
 dl_mode: remote
+download_dir: /tmp/dl
 syslog_udp_enabled: "{{ True if ansible_system == 'Linux' else False }}"

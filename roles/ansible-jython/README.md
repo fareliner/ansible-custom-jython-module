@@ -13,7 +13,7 @@ Installs jython and configures it to work with syslog.
 Logging to syslog using jna on unix
 
 ```py
-from org.productivity.java.syslog4j import Syslog
+from org.productivity.java.syslog4j import SyslogConstants, Syslog
 syslog = Syslog.getInstance("unix_syslog")
 syslog.info("This is an INFO level log entry.")
 

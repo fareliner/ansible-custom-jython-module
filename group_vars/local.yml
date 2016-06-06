@@ -1,5 +1,5 @@
 ---
-jboss_home: /opt/keycloak/keycloak-1.9.4.Final
+jboss_home: /opt/wildfly-10.0.0.Final
 download_dir: "~/Downloads"
 dl_mode: local
 syslog_udp_enabled: "{{ True if ansible_system == 'Linux' else False }}"
