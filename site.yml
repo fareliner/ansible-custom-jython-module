@@ -2,32 +2,44 @@
 - hosts: jyboss
 
   roles:
-    - role: ansible-rsyslog
-      tags: ['common']
-    - role: ansible-jython
-      tags: ['common']
+    - ansible-java
+    - ansible-jython
+    - ansible-jyboss
+    - ansible-wildfly
 
   tasks:
-
-    - name: "Download JyBoss Python Package (pip does not work properly behind proxy)"
-      include: roles/ansible-jython/tasks/dl/download-{{ dl_mode | default('local') }}.yml
-      vars:
-        module: "jyboss-{{ jyboss_version }}.tar.gz"
-        url: "https://github.com/bertramn/jyboss-cli/releases/download/v{{ jyboss_version }}/jyboss-{{ jyboss_version }}.tar.gz"
-      tags: ['common']
-
-    - name: Install JyBoss Python Package
-      pip:
-        name: "{{ download_dir }}/jyboss-{{ jyboss_version }}.tar.gz"
-        executable: "{{ jython_home }}/bin/pip"
-      tags: ['common']
-
     - name: Connect to JBoss For Facts
       jboss:
         jboss_home: "{{ jboss_home }}"
+        config_file: "standalone-ha.xml"
+        domain_mode: no
+        embedded_mode: yes
+        server_name: default-server
+        host_name: default-host
         facts: yes
       tags: ['jboss']
 
     - name: Check what we got from the JEE server retrieved by the JyBoss Module
-      debug: var=jboss_ls
+      debug: var=jboss
+      tags: ['jboss']
+
+    - name: Update Undertow Filters
+      jboss:
+        jboss_home: "{{ jboss_home }}"
+        config_file: "standalone-ha.xml"
+        domain_mode: no
+        embedded_mode: yes
+        server_name: default-server
+        host_name: default-host
+        custom_filter:
+          - name: proxy-peer
+            state: present
+            class_name: "io.undertow.server.handlers.ProxyPeerAddressHandler"
+            module: "io.undertow.core"
+          - name: request-dumper
+            state: present
+            class_name: "io.undertow.server.handlers.RequestDumpingHandler"
+            module: "io.undertow.core"
+            priority: 30
+
       tags: ['jboss']

@@ -25,7 +25,7 @@
 - name: "Download {{ module }}"
   become: no
   local_action: >
-    get_url url="{{ url }}" dest="{{ local_download_dir | default('~/Downloads') }}/{{ module }}" headers="{{ headers|default([])|join(',') }}"
+    get_url url="{{ url }}" dest="{{ local_download_dir | default('~/Downloads') }}/{{ module }}" headers="{{ header|default([])|join(',') }}"
   when: not module_download_check.stat.exists
 
 - name: Ensure Download Location on Target Host Exists

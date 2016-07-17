@@ -1,6 +1,6 @@
 ---
 - include: 01-prepare.yml
-  tags: [ jython ]
+  tags: [ jyboss ]
 
 - include: 02-install.yml
-  tags: [ jython ]
+  tags: [ jyboss ]

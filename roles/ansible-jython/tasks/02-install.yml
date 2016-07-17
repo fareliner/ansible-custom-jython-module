@@ -1,0 +1,30 @@
+---
+- name: Install Jython
+  shell: java -jar '{{ download_dir | default('/tmp') }}/{{ jython_module }}' -s -d "{{ jython_home }}"
+  args:
+    creates: "{{ jython_home }}/bin"
+
+# TODO review if this is not a security risk but otherwise no logged in user
+# will be able to load a jar from classpwth without a pesky error message
+- name: Free Jython Cache Directory
+  file: path={{ jython_home }}/cachedir state=directory recurse=no mode=0777
+
+- name: Free Jython Cache Package Directory
+  file: path={{ jython_home }}/cachedir/packages state=directory recurse=no mode=0777
+
+- name: Set Jython Default Shell
+  template:
+    src: jython.sh.j2
+    dest: "/etc/profile.d/jython.sh"
+    owner: root
+    group: root
+    mode: "0755"
+    force: "yes"
+
+- name: Link To User Local Environment
+  file:
+    src: "{{ jython_home }}/bin/jython"
+    dest: /usr/bin/jython
+    state: link
+    owner: root
+    group: root

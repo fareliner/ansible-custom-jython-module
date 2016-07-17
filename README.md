@@ -7,7 +7,13 @@ This is an example custom ansible module to manage WildFly/JBoss AS through jyth
 ensure requirements are met (see below) then run the example:
 
 ```sh
-ansible-playbook -vvvv local.yml
+ansible-playbook -vvvv site.yml
+```
+
+or use the vagrant example
+
+```sh
+vagrant up
 ```
 
 ## Requirements

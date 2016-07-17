@@ -1,0 +1,10 @@
+---
+
+# on ubuntu we install via a ppa but all others are direct installs from downloaded java packages
+java_package_names:
+    - "oracle-java{{ java_version }}-installer"
+    - "oracle-java{{ java_version }}-set-default"
+
+oracle_installer_key: "oracle-java{{ java_version }}-installer"
+
+oracle_license_key: accepted-oracle-license-v1-1

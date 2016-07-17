@@ -1,0 +1,5 @@
+---
+- name: Unpack Wildfly Distribution Package
+  command: tar xzf {{  download_dir | default('/tmp') }}/{{ wildfly_module }} -C {{ wildfly_home }} --strip-components=1
+  args:
+    creates: "{{ wildfly_home }}/bin"

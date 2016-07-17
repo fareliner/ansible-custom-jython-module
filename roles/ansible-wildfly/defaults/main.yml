@@ -1,0 +1,5 @@
+---
+wildfly_version: 10.0.0.Final
+wildfly_home: "/opt/wildfly-{{ wildfly_version }}"
+wildfly_module: "wildfly-{{ wildfly_version }}.tar.gz"
+wildfly_url: "http://download.jboss.org/wildfly/{{ wildfly_version }}/{{ wildfly_module }}"

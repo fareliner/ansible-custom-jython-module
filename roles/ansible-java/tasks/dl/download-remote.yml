@@ -18,5 +18,5 @@
   file: path="{{ download_dir | default('/tmp') }}" state=directory
 
 - name: "Download {{ module }}"
-  get_url: url="{{ url }}" dest="{{ download_dir | default('/tmp') }}/{{ module }}" headers="{{ headers|default([])|join(',') }}"
+  get_url: url="{{ url }}" dest="{{ download_dir | default('/tmp') }}/{{ module }}" headers="{{ header|default([])|join(',') }}"
   when: not module_download_check.stat.exists

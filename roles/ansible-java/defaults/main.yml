@@ -1,0 +1,5 @@
+---
+# version settings for the JDK
+java_version: 8
+java_minor_version: 91
+java_build: b14

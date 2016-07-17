@@ -1,0 +1,25 @@
+---
+- include: dl/download-{{ dl_mode | default('local') }}.yml
+  vars:
+    module: "{{ item.module }}"
+    url: "{{ item.url }}"
+  with_items:
+    - { # syslog4j
+        module: "syslog4j-{{ syslog4j_version }}.jar",
+        url: "http://repo1.maven.org/maven2/org/graylog2/syslog4j/{{ syslog4j_version }}/syslog4j-{{ syslog4j_version }}.jar"
+      }
+    - { # jna
+        module: "jna-{{ jna_version }}.jar",
+        url: "https://maven.java.net/content/repositories/releases/net/java/dev/jna/jna/{{ jna_version }}/jna-{{ jna_version }}.jar"
+      }
+    - { # jyboss
+        module: "jyboss-{{ jyboss_version }}.tar.gz",
+        url: "https://github.com/fareliner/jyboss-cli/releases/download/v{{ jyboss_version }}/jyboss-{{ jyboss_version }}.tar.gz"
+      }
+
+- name: Install Unzip
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=installed"
+  with_items:
+    - unzip
+  when: ansible_os_family == 'RedHat'
+  tags: [ yum ]

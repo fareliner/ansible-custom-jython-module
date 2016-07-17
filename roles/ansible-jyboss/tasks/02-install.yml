@@ -1,0 +1,20 @@
+---
+# "unpack" syslog to JYTHON_HOME/Lib
+- name: Unpack syslog4j to Jython Lib
+  shell:
+    cmd: unzip -qfo {{ download_dir | default('/tmp') }}/syslog4j-{{ syslog4j_version }}.jar 'org/graylog2/syslog4j/*' -d {{ jython_home }}/Lib
+  args:
+    creates: "{{ jython_home }}/Lib/org/graylog2/syslog4j"
+
+# "unpack" jna to JYTHON_HOME/Lib
+- name: Unpack Java Native Interface to Jython Lib
+  shell:
+    cmd: unzip -qfo {{ download_dir | default('/tmp') }}/jna-4.2.2.jar 'com/sun/jna*' -d {{ jython_home }}/Lib
+  args:
+    creates: "{{ jython_home }}/Lib/com/sun/jna"
+
+# install jyboss
+- name: Install JyBoss Python Package
+  pip:
+    name: "{{ download_dir | default('/tmp') }}/jyboss-{{ jyboss_version }}.tar.gz"
+    executable: "{{ jython_home }}/bin/pip"

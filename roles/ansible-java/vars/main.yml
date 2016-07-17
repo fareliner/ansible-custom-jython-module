@@ -1,0 +1,15 @@
+---
+# map ansible to Oracle conventions
+java_os_architecture: '{{ { "x86_64":"x64", "i386":"i586" }[ansible_architecture] }}'
+java_os_system: '{{ { "Linux": "linux", "Windows": "windows", "Darwin":"macosx" }[ansible_system] }}'
+
+# the jdk download package
+java_distro: "jdk-{{ java_version }}u{{ java_minor_version }}-{{ java_os_system }}-{{ java_os_architecture }}.{{ java_package_extension }}"
+
+# the jdk download url
+java_url: http://download.oracle.com/otn-pub/java/jdk/{{ java_version }}u{{ java_minor_version }}-{{ java_build }}/{{ java_distro }}
+
+#http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.rpm
+#http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.tar.gz
+#http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-macosx-x64.dmg
+#http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-windows-x64.exe

@@ -1,0 +1,8 @@
+---
+- include: dl/download-{{ dl_mode | default('local') }}.yml
+  vars:
+    module: "{{ wildfly_module }}"
+    url: "{{ wildfly_url }}"
+
+- name: Ensure Wildfly Home Directory Exists
+  file: path={{ wildfly_home }} state=directory mode=0755 owner=root group=root

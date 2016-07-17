@@ -1,0 +1,4 @@
+---
+- name: Install Java Development Kit
+  action: "{{ ansible_pkg_mgr }} name={{ item }} state=installed"
+  with_items: "{{ java_package_names }}"

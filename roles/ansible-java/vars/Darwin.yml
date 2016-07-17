@@ -1,0 +1,5 @@
+---
+java_package_extension: dmg
+
+# the name of the jdk package to install
+java_package_names: "{{ download_dir | default('/tmp') }}/{{ java_distro }}"

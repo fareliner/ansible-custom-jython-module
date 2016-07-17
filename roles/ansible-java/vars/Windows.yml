@@ -1,0 +1,5 @@
+---
+java_package_extension: exe
+
+# the name of the jdk package to install
+java_package_names: "{{ download_dir | default('/Temp') }}/{{ java_distro }}"

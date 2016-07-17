@@ -1,0 +1,19 @@
+---
+
+- name: Setup webupd8 Repository
+  apt_repository: repo="ppa:webupd8team/java" update_cache=yes
+
+- name: Add webupd8 Repository Key
+  apt_key: url=http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0xC2518248EEA14886 state=present
+
+- name: Add webupd8 Repository on Debian
+  apt_repository: repo='deb http://ppa.launchpad.net/webupd8team/java/ubuntu {{ ansible_distribution_release }} main' state=present
+
+- name: Add webupd8 Repository (src) on Debian
+  apt_repository: repo='deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu {{ ansible_distribution_release }} main' state=present
+
+- name: Accept Oracle license
+  debconf: name="{{ oracle_installer_key }}" question="shared/{{ oracle_license_key }}" value="true" vtype="select"
+
+- name: Update Cache
+  apt: update_cache=yes cache_valid_time=86400
